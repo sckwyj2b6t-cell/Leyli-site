@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Для Leyli ❤️</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Georgia,"Times New Roman",serif;background:#09050b;color:#fff}
+body{overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;background:
+radial-gradient(circle at 20% 20%,rgba(255,90,150,.16),transparent 28%),
+radial-gradient(circle at 80% 30%,rgba(170,80,255,.13),transparent 30%),
+radial-gradient(circle at 50% 90%,rgba(255,40,100,.10),transparent 35%);
+pointer-events:none}
+#stars,#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:.7;animation:twinkle 2.5s infinite ease-in-out}
+@keyframes twinkle{50%{opacity:.15;transform:scale(.5)}}
+.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;z-index:2}
+.card{width:min(440px,100%);padding:34px 26px;border:1px solid rgba(255,255,255,.16);border-radius:28px;background:rgba(255,255,255,.07);backdrop-filter:blur(18px);box-shadow:0 20px 70px rgba(0,0,0,.45);text-align:center}
+.lock{font-size:54px;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+h1{font-size:30px;margin:8px 0 12px}
+p{line-height:1.7;color:#eadfe7}
+.question{font-size:19px;margin:25px 0 18px;color:#fff}
+input{width:100%;padding:15px;border-radius:15px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.28);color:#fff;text-align:center;font-size:21px;outline:none}
+button{margin-top:15px;width:100%;padding:15px;border:0;border-radius:15px;background:linear-gradient(135deg,#ff4f91,#a85cff);color:#fff;font-size:17px;font-weight:bold;cursor:pointer;box-shadow:0 10px 30px rgba(255,70,140,.25);transition:.25s}
+button:hover{transform:translateY(-2px)}
+#error{height:24px;color:#ff9bbb;margin-top:12px}
+.hidden{display:none!important}
+.envelope-wrap{cursor:pointer;text-align:center}
+.envelope{width:250px;height:165px;margin:25px auto;position:relative;background:#f2c8d9;border-radius:10px;box-shadow:0 25px 60px rgba(0,0,0,.45);transition:.8s}
+.envelope:before{content:"";position:absolute;top:0;left:0;border-left:125px solid transparent;border-right:125px solid transparent;border-top:92px solid #e7a9c4;transform-origin:top;transition:.8s;z-index:3}
+.envelope:after{content:"♥";position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-size:38px;color:#b93669;z-index:4}
+.envelope.open{transform:translateY(10px)}
+.envelope.open:before{transform:rotateX(180deg)}
+.tap{color:#ffd7e6}
+.letter{width:min(650px,100%);max-height:82vh;overflow:auto;padding:34px 27px;border-radius:25px;background:linear-gradient(145deg,#fff8fb,#f9eaf1);color:#3b1827;box-shadow:0 30px 90px rgba(0,0,0,.5);animation:appear .9s ease}
+@keyframes appear{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:none}}
+.letter h2{text-align:center;color:#9e315e;font-size:30px;margin-top:0}
+.letter p{color:#4d2b38;font-size:17px;line-height:1.85}
+.signature{text-align:right;font-style:italic;color:#9e315e;margin-top:25px}
+.final{text-align:center;max-width:600px}
+.big-heart{font-size:90px;animation:heart 1.2s infinite}
+@keyframes heart{0%,100%{transform:scale(1)}50%{transform:scale(1.13)}}
+.final h2{font-size:34px}
+.yes{max-width:260px;margin:20px auto}
+.particle{position:fixed;pointer-events:none;font-size:20px;animation:rise 3.5s linear forwards;z-index:10}
+@keyframes rise{to{transform:translateY(-100vh) rotate(360deg);opacity:0}}
+#letterScreen{background:rgba(10,4,10,.45)}
+.small{font-size:13px;opacity:.7}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div id="hearts"></div>
+
+<section class="screen" id="login">
+  <div class="card">
+    <div class="lock">🔐</div>
+    <h1>Только для Leyli ❤️</h1>
+    <p>Прежде чем открыть это письмо, ответь на один маленький вопрос.</p>
+    <div class="question">В каком году я впервые попросил у тебя номер?</div>
+    <input id="answer" type="text" inputmode="numeric" maxlength="4" placeholder="Напиши год">
+    <button onclick="unlock()">Открыть ❤️</button>
+    <div id="error"></div>
+    <div class="small">Это маленький секрет между нами ✨</div>
+  </div>
+</section>
+
+<section class="screen hidden" id="envelopeScreen">
+  <div class="card envelope-wrap" onclick="openLetter()">
+    <div class="lock">💌</div>
+    <h1>Для тебя, Leyli</h1>
+    <div class="envelope" id="env"></div>
+    <div class="tap">Нажми на письмо, чтобы открыть его ✨</div>
+  </div>
+</section>
+
+<section class="screen hidden" id="letterScreen">
+  <article class="letter">
+    <h2>Для Leyli ❤️</h2>
+    <p>Leyli, я долго думал, как сказать тебе всё это.</p>
+    <p>Ты уже знаешь, что ты мне нравишься. Но мне хотелось сделать что-то особенное, чтобы ты могла спокойно прочитать то, что я не всегда могу сказать словами.</p>
+    <p>Я не знаю, что ты чувствуешь ко мне сейчас. И я не хочу заставлять тебя отвечать так, как мне хочется.</p>
+    <p>Я просто хочу, чтобы ты знала одну вещь: мои чувства к тебе настоящие. ❤️</p>
+    <p>Я помню тот момент, когда впервые попросил у тебя номер в 2025 году. Возможно, для тебя это был обычный момент, но для меня он стал началом чего-то очень важного.</p>
+    <p>Leyli, ты стала человеком, о котором я думаю чаще, чем могу объяснить.</p>
+    <p>Я не прошу тебя обещать мне любовь. Я просто хочу дать тебе возможность узнать, насколько ты мне дорога.</p>
+    <p>Если после этого письма ты улыбнулась хотя бы на секунду — значит, я уже счастлив. ❤️</p>
+    <p class="signature">От человека, которому ты очень дорога 🌹</p>
+    <button onclick="showFinal()">Продолжить ✨</button>
+  </article>
+</section>
+
+<section class="screen hidden" id="finalScreen">
+  <div class="final">
+    <div class="big-heart">❤️</div>
+    <h2>Leyli…</h2>
+    <p>Я не хочу давить на тебя или требовать ответа.</p>
+    <p>Мне просто хотелось, чтобы ты знала, что я чувствую.</p>
+    <p><b>Спасибо, что дочитала до конца.</b></p>
+    <button class="yes" onclick="celebrate()">Оставить здесь ❤️</button>
+    <p id="finalText"></p>
+  </div>
+</section>
+
+<script>
+const stars=document.getElementById("stars");
+for(let i=0;i<90;i++){
+  const s=document.createElement("span"); s.className="star";
+  s.style.left=Math.random()*100+"%"; s.style.top=Math.random()*100+"%";
+  s.style.animationDelay=(Math.random()*3)+"s"; stars.appendChild(s);
+}
+function unlock(){
+  const v=document.getElementById("answer").value.trim();
+  const e=document.getElementById("error");
+  if(v==="2025"){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("envelopeScreen").classList.remove("hidden");
+    burst("✨");
+  }else{
+    e.textContent="Попробуй ещё раз ❤️";
+    document.getElementById("answer").animate(
+      [{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"translateX(0)"}],
+      {duration:250}
+    );
+  }
+}
+document.getElementById("answer").addEventListener("keydown",e=>{if(e.key==="Enter")unlock()});
+function openLetter(){
+  document.getElementById("env").classList.add("open");
+  setTimeout(()=>{
+    document.getElementById("envelopeScreen").classList.add("hidden");
+    document.getElementById("letterScreen").classList.remove("hidden");
+    burst("♥");
+  },750);
+}
+function showFinal(){
+  document.getElementById("letterScreen").classList.add("hidden");
+  document.getElementById("finalScreen").classList.remove("hidden");
+  burst("❤️");
+}
+function burst(symbol){
+  for(let i=0;i<30;i++){
+    const p=document.createElement("div"); p.className="particle"; p.textContent=symbol;
+    p.style.left=(10+Math.random()*80)+"vw";
+    p.style.top=(70+Math.random()*20)+"vh";
+    p.style.animationDelay=(Math.random()*1.2)+"s";
+    document.getElementById("hearts").appendChild(p);
+    setTimeout(()=>p.remove(),4500);
+  }
+}
+function celebrate(){
+  burst("❤️");
+  document.getElementById("finalText").textContent="Пусть этот маленький сайт останется нашей красивой историей. ✨";
+}
+</script>
+</body>
+</html>
